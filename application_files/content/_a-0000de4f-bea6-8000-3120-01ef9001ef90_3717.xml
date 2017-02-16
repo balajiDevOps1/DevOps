@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <queryRule>
+        <name>TD_getAllActiveTaskDelegationDetails</name>
+        <uuid>_a-0000de4f-bea6-8000-3120-01ef9001ef90_3717</uuid>
+        <description></description>
+        <folderUuid>_a-0000de4d-12f8-8000-3120-01ef9001ef90_3170</folderUuid>
+        <dataStoreEntityCompositeUuid>7600d76c-5a66-4595-85db-3ca78e6c5e07@_a-0000de4d-12f8-8000-3120-01ef9001ef90_3211</dataStoreEntityCompositeUuid>
+        <params>
+            <param>
+                <description></description>
+                <name>DISABLE_DELEGATION</name>
+                <type>{http://www.w3.org/2001/XMLSchema}string</type>
+            </param>
+        </params>
+        <filters>
+            <filter>
+                <field>
+                    <name>DISABLE_DELEGATION</name>
+                    <type>{http://www.w3.org/2001/XMLSchema}string</type>
+                </field>
+                <op>=</op>
+                <value>DISABLE_DELEGATION</value>
+                <valueType>PARAMETER</valueType>
+            </filter>
+        </filters>
+        <orderings/>
+    </queryRule>
+    <roleMap public="false">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users>
+                <userUuid>snandinn</userUuid>
+            </users>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+</contentHaul>

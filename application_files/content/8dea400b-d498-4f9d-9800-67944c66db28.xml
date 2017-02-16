@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <rule>
+        <name>TD_mainAddOrDeleteDelegatee</name>
+        <uuid>8dea400b-d498-4f9d-9800-67944c66db28</uuid>
+        <description></description>
+        <parentUuid>_a-0000de4d-12f8-8000-3120-01ef9001ef90_3170</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+   local!itemsToken,
+  #"SYSTEM_SYSRULES_sectionLayout"(
+    label: " ",
+    firstColumnContents: {
+      #"SYSTEM_SYSRULES_gridLayout"(
+        headerCells: {
+          #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+            label: "Delegate To",
+            align: "LEFT"
+          ),
+          #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+            label: "Application",
+            align: "LEFT"
+          ),
+           #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+            label: "Disable Delegation",
+            align: "LEFT"
+          ),
+           #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+            label: "",
+            align: "LEFT"
+          )
+        },
+        columnConfigs: {
+          #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(
+            width: "DISTRIBUTE"
+          ),
+          #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(
+            width: "DISTRIBUTE"
+          ),
+           #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(
+            width: "DISTRIBUTE"
+          )
+        },
+        rows: #"SYSTEM_SYSRULES_applyComponents"(
+            function: #"248843a2-2f1f-4c96-a20a-0ce37918ff01"(
+              delegate: ri!delegate,
+              index: _,
+              itemsToken: local!itemsToken
+            ),
+            array: if(
+              or(
+                isnull(
+                  ri!delegate
+                ),
+                count(
+                  ri!delegate
+                ) &lt; 1
+              ),
+              {},
+              1 + enumerate(
+                count(
+                  ri!delegate
+                )
+              )
+            ),
+            arrayVariable: local!itemsToken
+          
+        ),
+        addRowlink: #"SYSTEM_SYSRULES_dynamicLink"(
+          label: "Add Item",
+          value: {due: today() + 1},
+          saveInto: {
+            a!save(
+              ri!delegate,
+              append(
+                ri!delegate,
+                save!value
+              )
+            ),
+            a!save(
+              local!itemsToken,
+              append(
+                local!itemsToken,
+                save!value
+              )
+            )
+          }
+        )
+      )
+    }
+  )
+)</definition>
+        <namedTypedValue>
+            <name>delegate</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <metadataExpr></metadataExpr>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users>
+                <userUuid>512386</userUuid>
+            </users>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+</contentHaul>

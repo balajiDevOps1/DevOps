@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <rule>
+        <name>TD_getTaskIdsbyTaskOwner</name>
+        <uuid>_a-0000de4f-bea6-8000-3120-01ef9001ef90_3594</uuid>
+        <description></description>
+        <parentUuid>_a-0000de4d-12f8-8000-3120-01ef9001ef90_3170</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(&#xD;
+  local!taskData:a!queryProcessAnalytics(&#xD;
+  report:#"_a-0000de4f-bea6-8000-3120-01ef9001ef90_3482",&#xD;
+  contextUsers: ri!taskOwner,&#xD;
+  query:  #"SYSTEM_SYSRULES_query"(&#xD;
+    logicalExpression: #"SYSTEM_SYSRULES_queryLogicalExpression"(&#xD;
+      operator:"AND",&#xD;
+      filters: if(#"d451faff-5591-4b19-8728-b58307163f55"(ri!uuid),&#xD;
+      {#"SYSTEM_SYSRULES_queryFilter"(&#xD;
+    field: "c3",&#xD;
+    operator: "between",&#xD;
+    value: {todatetime(ri!startDate),todatetime(ri!endDate)}&#xD;
+  ),&#xD;
+  #"SYSTEM_SYSRULES_queryFilter"(&#xD;
+    field: "c3",&#xD;
+    operator: "between",&#xD;
+    value: {now()-1,now()}&#xD;
+  )&#xD;
+  },&#xD;
+  {#"SYSTEM_SYSRULES_queryFilter"(&#xD;
+    field: "c3",&#xD;
+    operator: "between",&#xD;
+    value: {todatetime(ri!startDate),todatetime(ri!endDate)}&#xD;
+  ),&#xD;
+  #"SYSTEM_SYSRULES_queryFilter"(&#xD;
+    field: "c3",&#xD;
+    operator: "between",&#xD;
+    value: {now()-1,now()}&#xD;
+  ),&#xD;
+  #"SYSTEM_SYSRULES_queryFilter"(&#xD;
+    field: "c5",&#xD;
+    operator: "in",&#xD;
+    value: tointeger(#"2741b0f1-e0a2-420c-bc77-812ad8fa74ae"(ri!uuid))&#xD;
+  )&#xD;
+  })&#xD;
+    ),&#xD;
+    pagingInfo:#"SYSTEM_SYSRULES_pagingInfo"(1,-1)&#xD;
+    &#xD;
+    )&#xD;
+),&#xD;
+/*local!taskData*/if(isnull(local!taskData.data),{},index(local!taskData.data,"c4",""))&#xD;
+)&#xD;
+</definition>
+        <namedTypedValue>
+            <name>taskOwner</name>
+            <type>
+                <name>User</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>startDate</name>
+            <type>
+                <name>date</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>endDate</name>
+            <type>
+                <name>date</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>uuid</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+</contentHaul>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <rule>
+        <name>TD_mainUiTaskDelegation</name>
+        <uuid>_a-0000de4f-bea6-8000-3120-01ef9001ef90_3614</uuid>
+        <description></description>
+        <parentUuid>_a-0000de4d-12f8-8000-3120-01ef9001ef90_3170</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>= load(
+  local!delegationDetailsFromDB: #"_a-0000de4f-bea6-8000-3120-01ef9001ef90_3607"(
+    DISABLE_DELEGATION: null,
+    DELEGATED_BY: tostring(
+      loggedInuser()
+    )
+  ),
+  local!taskId,
+  
+  local!button,
+  local!success,
+  local!fail,
+  local!bDelegateAllTasks: if(
+    #"d451faff-5591-4b19-8728-b58307163f55"(
+      local!delegationDetailsFromDB
+    ),
+    true(),
+    or(
+      local!delegationDetailsFromDB.DELEGATE_ALL_TASKS
+    )
+  ),
+  local!delegate: if(
+    #"d451faff-5591-4b19-8728-b58307163f55"(
+      local!delegationDetailsFromDB
+    ),
+    {},
+    if(
+      or(
+        local!delegationDetailsFromDB.DELEGATE_ALL_TASKS
+      ),
+      index(
+        local!delegationDetailsFromDB,
+        where(
+          local!delegationDetailsFromDB.DELEGATE_ALL_TASKS
+        ),
+        {}
+      ),
+      {}
+    )
+  ),
+  local!delegateApplication: if(#"d451faff-5591-4b19-8728-b58307163f55"(local!delegate),local!delegationDetailsFromDB,{}),
+  #"SYSTEM_SYSRULES_formLayout"(
+    label: "Task Delegation",
+    instructions: "",
+    firstColumnContents: {
+      #"1af6bf40-ce5c-40cb-9264-7b8e76ccff20"(
+        delegate: local!delegate,
+        delegateApplication: local!delegateApplication,
+        bDelegateAllTasks: local!bDelegateAllTasks
+      )
+    },
+    secondColumnContents: {},
+    buttons: #"SYSTEM_SYSRULES_ButtonLayout"(
+      primaryButtons: {
+        #"SYSTEM_SYSRULES_ButtonWidgetSubmit"(
+          label: "Save",
+          style: "PRIMARY",
+          saveInto: {
+            #"SYSTEM_SYSRULES_startProcess"(
+              processModel: #"_a-0000de4f-bea6-8000-3120-01ef9001ef90_3613",
+              processParameters: {
+                initiator: loggedInUser(),
+                TD_DelgAllTasksDelgDetails: local!delegate,
+                TD_DelgAppLevelDelgDetails: local!delegateApplication,
+                bDelegateAllTasks: local!bDelegateAllTasks
+              },
+              onSuccess: a!save(
+                local!success,
+                "Success"
+              ),
+              onError: a!save(
+                local!fail,
+                "Fail"
+              )
+            )
+          }
+        )
+      },
+      secondaryButtons: {}
+    ),
+    validations: {}
+  )
+)</definition>
+        <metadataExpr></metadataExpr>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+</contentHaul>

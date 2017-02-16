@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <rule>
+        <name>TD_uiMyTaskGrid</name>
+        <uuid>_a-0000de5f-7bd3-8000-3120-01ef9001ef90_3747</uuid>
+        <description></description>
+        <parentUuid>_a-0000de4d-12f8-8000-3120-01ef9001ef90_3170</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!portalReportDataSubset: a!queryProcessAnalytics(
+  report:#"_a-0000de4f-bea6-8000-3120-01ef9001ef90_3482",
+  contextUsers: loggedInuser()),
+  local!taskReportData:local!portalReportDataSubset.data,
+  local!statusFilter:1,
+  #"SYSTEM_SYSRULES_sectionLayout"(
+  label: "My Task List",
+  firstColumnContents: {
+    #"SYSTEM_SYSRULES_dropdownField"(
+      label: "Filter",
+      labelPosition: "ABOVE",
+      placeholderLabel: "--- Select a Value ---",
+      choiceLabels: {"Delegated Assigned", "All Tasks"},
+      choiceValues: {1, 2},
+      saveInto: {},
+      validations: {}
+    ),
+    #"SYSTEM_SYSRULES_gridField"(
+      label: "",
+      labelPosition: "ABOVE",
+      totalCount: count(local!taskReportData),
+      columns: {
+        #"SYSTEM_SYSRULES_gridTextColumn"(
+          label: "Task Name",
+          field:"c0",
+          data: {index(local!taskReportData,"c0","")},
+          links: apply(
+          #"SYSTEM_SYSRULES_processTaskLink"(task: _),
+          index(local!taskReportData, "dp0", {})
+        )
+        ),
+        #"SYSTEM_SYSRULES_gridTextColumn"(
+          label: "Status",
+          field:"c1",
+          data: {index(local!taskReportData,"c1","")}
+        ),
+        #"SYSTEM_SYSRULES_gridTextColumn"(
+          label: "Assigned On",
+          field:"c3",
+          data: {index(local!taskReportData,"c3","")}
+        )
+      },
+      value: #"SYSTEM_SYSRULES_pagingInfo"(startIndex: 1, batchSize: 5),
+      saveInto: {},
+      validations: {}
+    )
+  },
+  secondColumnContents: {
+  },
+  validations: {}
+)
+)</definition>
+        <metadataExpr></metadataExpr>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+</contentHaul>

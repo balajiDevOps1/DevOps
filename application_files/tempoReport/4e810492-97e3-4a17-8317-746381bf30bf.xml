@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tempoReportHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <tempoReport a:uuid="4e810492-97e3-4a17-8317-746381bf30bf" name="TD Task Delegation">
+        <a:description></a:description>
+        <a:uiExpr>=#"_a-0000de4f-bea6-8000-3120-01ef9001ef90_3614"()</a:uiExpr>
+        <a:urlStub>uCWUiQ</a:urlStub>
+    </tempoReport>
+    <roleMap/>
+</tempoReportHaul>

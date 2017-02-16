@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <rule>
+        <name>TD_addOrDeleteDelegatee</name>
+        <uuid>248843a2-2f1f-4c96-a20a-0ce37918ff01</uuid>
+        <description>this rule will be used to choose the delegatee.</description>
+        <parentUuid>_a-0000de4d-12f8-8000-3120-01ef9001ef90_3170</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>#"SYSTEM_SYSRULES_gridRowLayout"(
+  id: ri!index,
+  contents: {
+    #"SYSTEM_SYSRULES_pickerFieldUsers"(
+      label: "delegatee" &amp; ri!index,
+      labelPosition: "ADJACENT",
+      value: ri!delegate[ri!index].DELEGATED_TO,
+      saveInto: ri!delegate[ri!index].DELEGATED_TO
+    ),
+    #"SYSTEM_SYSRULES_dropdownField"(
+      label: "applicationName" &amp; ri!index,
+      labelPosition: "ADJACENT",
+      placeholderLabel: "SELECT",
+      choiceLabels: #"_a-0000de4d-12f8-8000-3120-01ef9001ef90_3188",
+      choiceValues: #"_a-0000de4d-12f8-8000-3120-01ef9001ef90_3195",
+      value:ri!delegate[ri!index].APPLICATION_NAME,
+      validations: if(#"d451faff-5591-4b19-8728-b58307163f55"(ri!delegate),"",if(count(wherecontains(ri!delegate[ri!index].APPLICATION_NAME,{ri!delegate.APPLICATION_NAME}))&gt;1,"Applications cannot be Duplicate","")),
+      saveInto: ri!delegate[ri!index].APPLICATION_NAME
+    ),
+    #"SYSTEM_SYSRULES_checkboxField"(
+      label: "Disable Delegation" &amp; ri!index,
+      labelPosition: "ADJACENT",
+      choiceLabels:{" "},
+      choiceValues:{"true"},
+      value: ri!delegate[ri!index].DISABLE_DELEGATION,
+      saveInto: {ri!delegate[ri!index].DISABLE_DELEGATION}
+    ),
+    if(#"d451faff-5591-4b19-8728-b58307163f55"(ri!delegate[ri!index].ID),
+    #"SYSTEM_SYSRULES_imageField"(
+      label: "delete " &amp; ri!index,
+      images: #"SYSTEM_SYSRULES_documentImage"(
+        document: #"SYSTEM_SYSRULES_iconIndicator"(
+          "REMOVE"
+        ),
+        altText: "Remove",
+        caption: "Remove " &amp; ri!delegate[ri!index].APPLICATION_NAME,
+        link: #"SYSTEM_SYSRULES_dynamicLink"(
+          value: ri!index,
+          saveInto: {
+            a!save(
+              ri!delegate,
+              remove(
+                ri!delegate,
+                save!value
+              )
+            ),
+            a!save(
+              ri!itemsToken,
+              remove(
+                ri!itemsToken,
+                save!value
+              )
+            )
+          }
+        )
+      ),
+      size: "ICON"
+    ),
+    #"SYSTEM_SYSRULES_textField"(
+      label:"",
+      readOnly:true()
+    )
+    )
+  }
+)</definition>
+        <namedTypedValue>
+            <name>index</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>delegate</name>
+            <type>
+                <name>TD_DelegationDetails?list</name>
+                <namespace>urn:com:appian:types</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>itemsToken</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <metadataExpr></metadataExpr>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users>
+                <userUuid>512386</userUuid>
+            </users>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+</contentHaul>

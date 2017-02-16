@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <rule>
+        <name>TD_ufDelegation</name>
+        <uuid>1af6bf40-ce5c-40cb-9264-7b8e76ccff20</uuid>
+        <description></description>
+        <parentUuid>_a-0000de4d-12f8-8000-3120-01ef9001ef90_3170</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>{
+  #"SYSTEM_SYSRULES_sectionLayout"(
+    firstColumnContents: {
+      #"SYSTEM_SYSRULES_radioButtonField"(
+        label: " ",
+        labelPosition: "ABOVE",
+        choiceLabels: {
+          "Delegate All tasks",
+          "Delegate Application Tasks"
+        },
+        choiceValues: {
+          true(),
+          false()
+        },
+        value: if(isnull(ri!bDelegateAllTasks),true(),ri!bDelegateAllTasks),
+        saveInto: ri!bDelegateAllTasks
+      )
+    },
+    secondColumnContents: {
+      #"SYSTEM_SYSRULES_textField"(
+        label: "",
+        readOnly: true()
+      )}
+      ),
+      if(
+        or(
+          ri!bDelegateAllTasks = true(),
+          isnull(
+            ri!bDelegateAllTasks
+          )
+        ),
+        #"SYSTEM_SYSRULES_sectionLayout"(
+    firstColumnContents: {
+       #"SYSTEM_SYSRULES_pickerFieldUsers"(
+          label: "Delegate All Tasks To :",
+          maxSelections: 1,
+          labelPosition: "ADJACENT",
+          required: true(),
+          value: ri!delegate.DELEGATED_TO,
+          saveInto: ri!delegate.DELEGATED_TO
+        ),
+      #"SYSTEM_SYSRULES_dateField"(
+        label: "Start Date",
+        labelPosition: "ADJACENT",
+        value: ri!delegate.DELEGATION_START_DATE,
+        required: true(),
+        saveInto: {
+          ri!delegate.DELEGATION_START_DATE,
+          a!save(ri!delegate.CREATED_ON,now()),
+          a!save(ri!delegate.LAST_UPDATED_ON,now())
+        },
+        validations: if(
+          ri!delegate.DELEGATION_START_DATE &gt;= today(),
+          "",
+          "Please provide a Valid date"
+        )
+      )
+    },
+    secondColumnContents: {
+      #"SYSTEM_SYSRULES_textField"(
+        label: "",
+        readOnly: true()
+      ),
+      #"SYSTEM_SYSRULES_dateField"(
+        label: "End Date",
+        labelPosition: "ADJACENT",
+        value: ri!delegate.DELEGATION_END_DATE,
+        required: true(),
+        saveInto: ri!delegate.DELEGATION_END_DATE,
+        validations: if(
+          and(
+            ri!delegate.DELEGATION_END_DATE &gt;= today(),
+            ri!delegate.DELEGATION_END_DATE &gt;= ri!delegate.DELEGATION_START_DATE
+          ),
+          "",
+          "Please provide a Valid date"
+        )
+      )
+    }
+  ),
+        {
+        #"8dea400b-d498-4f9d-9800-67944c66db28"(ri!delegateApplication),
+        #"SYSTEM_SYSRULES_sectionLayout"(
+    firstColumnContents: {
+      #"SYSTEM_SYSRULES_dateField"(
+        label: "Start Date",
+        labelPosition: "ADJACENT",
+        value: ri!delegateApplication.DELEGATION_START_DATE,
+        required: true(),
+        saveInto: {
+          ri!delegateApplication.DELEGATION_START_DATE,
+          a!save(ri!delegateApplication.CREATED_ON,now()),
+          a!save(ri!delegateApplication.LAST_UPDATED_ON,now())
+        }/*,
+        validations: if(
+          ri!delegate.DELEGATION_START_DATE &gt;= today(),
+          " ",
+          "Please provide Valid date"
+        )*/
+      )
+    },
+    secondColumnContents: {
+      #"SYSTEM_SYSRULES_dateField"(
+        label: "End Date",
+        labelPosition: "ADJACENT",
+        value: ri!delegateApplication.DELEGATION_END_DATE,
+        required: true(),
+        saveInto: ri!delegateApplication.DELEGATION_END_DATE/*,
+        validations: if(
+          and(
+            ri!delegate.DELEGATION_END_DATE &gt;= today(),
+            ri!delegate.DELEGATION_END_DATE &gt;= ri!delegate.DELEGATION_START_DATE
+          ),
+          " ",
+          "Please provide Valid date"
+        )*/
+      )
+    }
+  )
+        }
+      )
+    }
+  /*),
+  if(
+    ri!bDelegateAllTasks = false(),
+    {
+      rule!TD_mainAddOrDeleteDelegatee(ri!delegateApplication)
+    },
+    {}
+  ),
+  
+}*/</definition>
+        <namedTypedValue>
+            <name>delegate</name>
+            <type>
+                <name>TD_DelegationDetails</name>
+                <namespace>urn:com:appian:types</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>delegateApplication</name>
+            <type>
+                <name>TD_DelegationDetails?list</name>
+                <namespace>urn:com:appian:types</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>bDelegateAllTasks</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <metadataExpr></metadataExpr>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users>
+                <userUuid>512386</userUuid>
+            </users>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+</contentHaul>
